@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     const isCOD = order.financial_status !== "paid";
 
     const row = [
-      "",                                   // SERIAL NUMBER
+      order.order_number,                                   // SERIAL NUMBER
       "",                                   // BARCODE NO
       "0.5",                                // PHYSICAL WEIGHT
       shipping.city || "",                  // RECEIVER CITY
@@ -28,14 +28,14 @@ export default async function handler(req, res) {
       shipping.address1 || "",              // RECEIVER ADD LINE 1
       shipping.address2 || "",              // RECEIVER ADD LINE 2
       "",                                   // RECEIVER ADD LINE 3
-      "Y",                                  // ACK
+      "FALSE",                                  // ACK
       process.env.SENDER_MOBILE,            // SENDER MOBILE NO
       shipping.phone || order.phone || "",  // RECEIVER MOBILE NO
       isCOD ? "" : "PPD",                   // PREPAYMENT CODE
       isCOD ? "" : order.total_price,       // VALUE OF PREPAYMENT
       isCOD ? "COD" : "",                   // CODR/COD
       isCOD ? order.total_price : "",       // VALUE FOR CODR/COD
-      "", "", "BOX",                        // INSURANCE / SHAPE
+      "", "", "NROLL",                        // INSURANCE / SHAPE
       "10", "10", "5",                      // L B H
       "", "", "", "",                       // PRIORITY / DELIVERY
       process.env.SENDER_NAME,
@@ -48,8 +48,8 @@ export default async function handler(req, res) {
       shipping.company || "",
       shipping.province || "",
       customer.email || "",
-      "", "", "", "",                       // RECEIVER EXTRA
-      order.name,
+      "", "", "", "FALSE",                       // RECEIVER EXTRA
+      "",
       process.env.SENDER_ADD1,
       process.env.SENDER_ADD2,
       process.env.SENDER_ADD3
