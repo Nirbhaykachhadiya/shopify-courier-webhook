@@ -19,9 +19,9 @@ export default async function handler(req, res) {
     const isCOD = order.financial_status !== "paid";
 
     // Get dimensions from metafields
-const length = item.properties?.find(p => p.name === "shipping.length")?.value || "10";
-const breadth = item.properties?.find(p => p.name === "shipping.breadth")?.value || "10";
-const height = item.properties?.find(p => p.name === "shipping.height")?.value || "5";
+const length = order.line_items[0].properties?.find(p => p.name === "shipping.length")?.value || "10";
+const breadth = order.line_items[0].properties?.find(p => p.name === "shipping.breadth")?.value || "10";
+const height = order.line_items[0].properties?.find(p => p.name === "shipping.height")?.value || "5";
 
     const row = [
       order.order_number,                                   // SERIAL NUMBER
