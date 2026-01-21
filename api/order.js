@@ -18,10 +18,15 @@ export default async function handler(req, res) {
     const customer = order.customer || {};
     const isCOD = order.financial_status !== "paid";
 
+    // Get dimensions from metafields
+const length = item.properties?.find(p => p.name === "shipping.length")?.value || "10";
+const breadth = item.properties?.find(p => p.name === "shipping.breadth")?.value || "10";
+const height = item.properties?.find(p => p.name === "shipping.height")?.value || "5";
+
     const row = [
       order.order_number,                                   // SERIAL NUMBER
       "",                                   // BARCODE NO
-      "0.5",                                // PHYSICAL WEIGHT
+      order.line_items[0].grams,                                // PHYSICAL WEIGHT
       shipping.city || "",                  // RECEIVER CITY
       shipping.zip || "",                   // RECEIVER PINCODE
       shipping.name || "",                  // RECEIVER NAME
@@ -36,7 +41,9 @@ export default async function handler(req, res) {
       isCOD ? "COD" : "",                   // CODR/COD
       isCOD ? order.total_price : "",       // VALUE FOR CODR/COD
       "", "", "NROLL",                        // INSURANCE / SHAPE
-      "10", "10", "5",                      // L B H
+     length,                         // LENGTH (from product)
+     breadth,                        // BREADTH
+    height,                         // HEIGHT
       "", "", "", "",                       // PRIORITY / DELIVERY
       process.env.SENDER_NAME,
       process.env.SENDER_COMPANY,
